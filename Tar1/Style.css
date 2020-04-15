@@ -1,0 +1,269 @@
+﻿form {
+    margin-right: 50px;
+    color: #005473;
+    text-align: right;
+}
+
+body {
+    background-color: aliceblue;
+}
+
+#icons, #ExtraHours {
+    border: 2px ridge cadetblue;
+    /*margin-right: 500px;*/
+    font-size: 20px;
+    width: 60%;
+    text-align: right;
+    height: auto;
+}
+
+#icons {
+    height: 210px;
+}
+
+.row {
+    width: 100%;
+}
+
+#icons > p, #ExtraHours > p {
+    text-align: center;
+    text-decoration: underline;
+    font-size: 40px;
+}
+
+input[type=number] {
+    width: 60px;
+}
+
+button, input[type=submit] {
+    background-color: #008CBA;
+    color: white;
+    font-family: Calibri;
+}
+
+#submitshift {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 50px;
+}
+
+.shiftsShow {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 20px;
+    height: auto;
+    border-color: aquamarine;
+    border-style: ridge;
+    /*background-color: #CCFFCC;*/
+}
+
+#SubmShift {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 20px;
+    color: #66CCFF;
+}
+
+    #SubmShift > div > h5 {
+        font-weight: bold;
+    }
+
+    #SubmShift > input[type=button] {
+        border: 1px solid mintcream;
+        background-color: #4682B4;
+        font-size: 30px;
+        color: mintcream;
+        margin-left: auto;
+        margin-right: auto;
+        /*height: 50px;
+        width: 200px;*/
+        font-weight: bold;
+        text-align: center;
+    }
+
+    #SubmShift > h1 {
+        font-family: Calibri;
+        font-size: 75px;
+    }
+
+.shiftsShow > input[type=text], textarea {
+    width: 150px;
+    height: 70px;
+    border: 1px solid cadetblue;
+    background-color: aliceblue;
+    font-size: 20px;
+    color: cadetblue;
+    margin-right: auto;
+    margin-left: auto;
+}
+
+.shiftsShow > input[type=button] {
+    border: 1px solid cadetblue;
+    background-color: cadetblue;
+    font-size: 20px;
+    color: honeydew;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+#BigUnitManager {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 50px;
+}
+
+#panoramaLM {
+    width: 1200px;
+    height: 200px;
+}
+
+
+.teamwork {
+    width: 1200px;
+    height: 200px;
+}
+
+.mainpic {
+    width: 1200px;
+    height: 400px;
+}
+
+#UnitManager {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 50px;
+}
+
+h5 {
+    text-align: center;
+    direction: rtl;
+}
+
+#Guide {
+    color: cadetblue;
+    font-family: Calibri;
+    text-align: center;
+    font-size: 50px;
+}
+
+.Bigmanagerpics {
+    height: 250px;
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+}
+
+#panoramaBigM {
+    width: 1200px;
+    height: 300px;
+}
+
+.unitmanagerpics {
+    height: 250px;
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+}
+
+.Guidespics {
+    height: 250px;
+    width: 300px;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    border-radius: 50%;
+    cursor: pointer;
+}
+
+img {
+    height: 100px;
+    width: 150px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+h1, h2 {
+    text-align: center;
+    color: #66CCFF;
+}
+
+input, select {
+    border: none;
+    border-bottom: 1px solid #66CCFF;
+    color: #005473;
+    font-family: Calibri;
+    text-align: center;
+    background-color: aliceblue;
+}
+
+    input[type=checkbox] {
+        background-color: aliceblue;
+        border: solid #005473;
+    }
+
+.container {
+    width: 90%;
+    padding: 30px;
+}
+
+.selectguides {
+    border: 1px solid cadetblue;
+    background-color: cadetblue;
+    font-size: 20px;
+    color: honeydew;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+table, th, td {
+    font-size: 30px;
+    border: 2px solid cadetblue;
+    border-collapse: collapse;
+    text-align: center;
+    font-family: Calibri;
+    width: 100%;
+    margin-left: auto;
+    margin-right: auto;
+    text-align: center;
+}
+
+tr, td {
+    padding: 15px;
+}
+
+span:before {
+    content: " ";
+    display: inline-block;
+    width: 42px;
+}
+
+#lists:before {
+    content: " ";
+    display: inline-block;
+    width: 100px;
+}
+
+.before, .after {
+    background-color: lightgray;
+}
+
+#ChoosenShift > div > div > input[type=time] {
+    color: cadetblue;
+    background-color: aliceblue;
+    border: 1px ridge cadetblue;
+}
+
+#ChoosenShift > div > div > button {
+    color: honeydew;
+    background-color: cadetblue;
+    border: none;
+}

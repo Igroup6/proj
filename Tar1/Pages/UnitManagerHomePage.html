@@ -1,0 +1,82 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        function GoToGuides() {
+            window.location.href = "AddGuide.html";
+        }
+        function GoToPeriod() {
+            window.location.href = "AddPeriod.html";
+        }
+
+    </script>
+    <title></title>
+</head>
+<body dir="rtl" onload="GetUsers()" style="background-color:aliceblue">
+    <img src="../Photos/LOGO.PNG" />
+    <div class="container" id="UnitManager">
+        <div class="row">
+            <img src="../Photos/teamwork.jpg" class="teamwork" />
+        </div>
+        <h1 style="font-size:100px"> מנהל יחידה ארגונית</h1><br />
+        <div class="row">
+            <div class="col-4" onclick="GoToGuides()" style="cursor: pointer;">
+                <div class="row">
+                    <label style="cursor: pointer;">הוספה/עריכת מדריכים</label>
+                </div>
+                <div class="row">
+                    <img src="../Photos/group-friends.jpg" class="unitmanagerpics"  />
+                </div>
+            </div>
+            <div class="col-4" onclick="GoToPeriod()" style="cursor: pointer;">
+                <div class="row">
+                    <label style="cursor: pointer;">הוספה/עריכת תקופות שיבוץ</label>
+                </div>
+                <div class="row">
+                    <img src="../Photos/calendar-mock-up.jpg" class="unitmanagerpics" style="margin-right:35px;" />
+                </div>
+            </div>
+            <div class="col-4" style="cursor: pointer;">
+                <div class="row">
+                    <label style="cursor: pointer;">שיבוץ משמרות לסידור  הבא</label>
+                </div>
+                <div class="row">
+                    <img src="../Photos/Post-it-notes.jpg" class="unitmanagerpics" />
+                </div>
+            </div>
+        </div>
+        <br />
+        <div class="row">
+            <div class="col-6" style="cursor: pointer;">
+                <div class="row">
+                    <label style="cursor: pointer;margin-right:100px">צפייה/עריכה סידור קיים</label>
+                </div>
+                <div class="row">
+                    <img src="../Photos/science-education.jpg" class="unitmanagerpics" style="margin-right:160px;" />
+                </div>
+            </div>
+            <div class="col-6" style="cursor: pointer;">
+                <div class="row">
+                    <label style="cursor: pointer;margin-right:60px">שינוי נתוני משמרות קודמות</label>
+                </div>
+                <div class="row">
+                    <img src="../Photos/small-wooden-clock.jpg" class="unitmanagerpics" style="margin-right:150px"/>
+                </div>
+            </div>
+        </div>
+        <br />
+
+    </div>
+</body>
+</html>

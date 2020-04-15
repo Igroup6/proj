@@ -1,0 +1,140 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        UnitArray = [];
+        TLarray = [];
+        function GetTrainingLevel() {
+            ajaxCall("GET", "../api/TrainingLevel", "", GetTrianingS, GetTrianingE);
+            ajaxCall("GET", "../api/OrganizeUnit", "", GetOrganizeUnitS, GetOrganizeUnitE);//Also get units
+        }
+        function GetTrianingS(data) {
+            TLarray = data;
+            str = "<option>בחר רמת הכשרה</option>";
+            for (var i = 0; i < data.length; i++) {
+                str += "<option>" + data[i].Traininglevel + "</option>"
+            }
+            $("#SelectTraining").html(str);
+        }
+        function GetTrianingE(error) {
+            console.log(error);
+        }
+
+        function GetOrganizeUnitS(data) {
+            UnitArray = data;
+                     str = "<option>בחר יחידה ארגונית</option>";
+            for (var i = 0; i < data.length; i++) {
+                str += "<option>" + data[i].Unitname + "</option>"
+            }
+            $("#SelectUnit").html(str);
+        }
+        function GetOrganizeUnitE(error) {
+            console.log(error);
+        }
+
+        function InsertUser() {
+            id = $("#id").val();
+            first = $("#first").val();
+            last = $("#last").val();
+            bdate = $("#bdate").val();
+            tel = $("#tel").val();
+            pass = $("#pass").val();
+            unit = $("#SelectUnit").val();
+            role = "מדריך";
+            unitid = 0;
+            for (var i = 0; i < UnitArray.length; i++) {
+                if (unit == UnitArray[i].Unitname)
+                    unitid = UnitArray[i].Id;
+            }
+            User = {
+                "Userid": id,
+                "Password": pass,
+                "Firstname": first,
+                "Lastname": last,
+                "Birthdate": bdate,
+                "Telephone": tel,
+                "Role": role,
+                "Unitid": unitid,
+            }
+            TL = 0;
+            trl = $("#SelectTraining").val();
+            for (var i = 0; i < TLarray.length; i++) {
+                if (trl == TLarray[i].Traininglevel)
+                    TL = TLarray[i].Id;
+            }
+
+            SpicialLevel = {
+                "Id": TL,
+            }
+
+            ajaxCall("POST", "../api/User", JSON.stringify(User), PostUserS, PostUserE);
+           
+
+        }
+        function PostUserS(data) {
+            alert("SABABA");
+            id = $("#id").val();
+            TL = 0;
+            trl = $("#SelectTraining").val();
+            for (var i = 0; i < TLarray.length; i++) {
+                if (trl == TLarray[i].Traininglevel)
+                    TL = TLarray[i].Id;
+            }
+
+            SpicialLevel = {
+                "Id": TL,
+            }
+
+              ajaxCall("PUT", "../api/TrainingLevel/" + id, JSON.stringify(SpicialLevel), PutTrianingS, PutTrianingE);
+        }
+        function PostUserE(error) {
+            console.log(error);
+            alert("BASA");
+        }
+
+        function PutTrianingS(data) {
+            alert("SABABA");
+        }
+        function PutTrianingE(error) {
+            console.log(error);
+            alert("BASA");
+        }
+    </script>
+    <title></title>
+</head>
+<body dir="rtl" style="background-color:aliceblue" onload="GetTrainingLevel()">
+    <img src="../Photos/LOGO.PNG" />
+    <div class="container">
+        <h1>  הוספת מדריך חדש</h1><br />
+        <div class="row">
+            <form dir="rtl">
+                <div class="col">
+                    <select id="SelectUnit">
+                    </select><br />
+                    <span>ת"ז: </span><input type="text" id="id" /><br />
+                    <span>שם פרטי: </span><input type="text" id="first" /><br />
+                    <span>שם משפחה: </span><input type="text" id="last" /><br />
+                    <span> תאריך לידה:</span><input type="date" id="bdate" /><br />
+                    <span> טלפון:</span><input type="tel" id="tel" /><br />
+                    <span>    רמת הכשרה:    </span>
+                    <select id="SelectTraining">
+                    </select><br />
+                    <span> סיסמא:</span><input type="text" id="pass" /><br />
+                </div>
+            </form>
+            <br /><input type="submit" value="שמור" onclick="InsertUser()" /><br />
+        </div>
+    </div>
+</body>
+</html>

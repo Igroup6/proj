@@ -1,0 +1,160 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script src="../Scripts/moment.js"></script>S
+    <script>
+        //user;
+        //function GetUser() {
+        //    x = localStorage.getItem("User");
+        //    user = JSON.parse(x);
+        //}
+
+        ShiftsArray = [];
+        BlockShifts = [];
+        ApplyShift = [];
+        function GetSHifts() {
+            Unitid = 2;//in the future get it from localstorage
+            ajaxCall("GET", "../api/Shifts/" + Unitid, "", GETShiftS, GETShiftE);
+        }
+        function GETShiftS(data) {
+            for (var i = 0; i < data.length; i++) {
+                d = data[i].Shiftdate.split("T");
+                x = data[i].Start.split("T");
+                y = data[i].End.split("T");
+                shiftdatestart = d[0] + " " + x[1];
+                shiftdateend = d[0] + " " + y[1];
+                shift = {
+                    "Type": data[i].Type,
+                    "StartShift": moment(shiftdatestart),
+                    "EndShift": moment(shiftdateend)
+                }
+                ShiftsArray.push(shift);
+            }
+            ShiftsArray.sort(sortByDateAsc);
+            str = "";
+            for (var i = 0; i < ShiftsArray.length; i++) {
+                datestr = ShiftsArray[i].StartShift.format('DD/MM/YYYY');
+                str = "<div class='row shiftsShow' id='" + ShiftsArray[i].StartShift.format("YYYY-MM-DD") + "|" + ShiftsArray[i].Type + "'><p>" + ShiftsArray[i].Type + "<br />" + datestr + "<br />" + ShiftsArray[i].EndShift.format('HH:mm') + " - " + ShiftsArray[i].StartShift.format('HH:mm') + "<br /> הערות:</p> <br /><textarea id='" + ShiftsArray[i].StartShift.format("YYYY-MM-DD") + "||" + ShiftsArray[i].Type + "'  ></textarea><br /><input type='button' value='לחץ לחסימה'  onclick='ChangeShiftPref(this.parentNode.id,this)' /></div><br />";
+                shiftd = ShiftsArray[i].StartShift.day();
+                switch (shiftd) {
+                    case shiftd:
+                        document.getElementById(shiftd).innerHTML += str;
+                        break;
+                    default:
+                        break;
+                }
+            }
+        }
+        function GETShiftE(error) {
+            alert("BASSA");
+            console.log(error);
+        }
+        function ChangeShiftPref(id, x) {
+            if (x.value == 'לחץ לחסימה') {
+                x.value = 'לחץ להגשה';
+                document.getElementById(id).style.backgroundColor = "#FF0000";
+                document.getElementById(id).style.color = "#FCF1F1";
+                x.style.backgroundColor = "#FCF1F1";
+                x.style.color = "#FF0000";
+                BlockShifts.push(id);
+            }
+            else if (x.value == 'לחץ להגשה') {
+                x.value = 'לחץ לחסימה';
+                document.getElementById(id).style.backgroundColor = "#CCFFCC";
+                document.getElementById(id).style.color = "cadetblue";
+                x.style.backgroundColor = "cadetblue";
+                x.style.color = "honeydew";
+                for (var i = 0; i < BlockShifts.length; i++) {
+                    if (BlockShifts[i] == id)
+                        BlockShifts.splice(i, 1);
+                }
+            }
+        }
+        function PostBlockShifts() {
+            unitid = 2;
+            userid = 6543321;
+            for (var i = 0; i < ShiftsArray.length; i++) {
+                datestr = ShiftsArray[i].StartShift.format("YYYY-MM-DD");
+                IdShift = datestr + "|" + ShiftsArray[i].Type;
+                IdComment = datestr + "||" + ShiftsArray[i].Type;
+                comment = document.getElementById(IdComment).value;
+                AplShift = {
+                    "Userid": userid,
+                    "Unitid": unitid,
+                    "Shifttype": ShiftsArray[i].Type,
+                    "Comment": comment,
+                    "Shiftdate": datestr,
+                    "Isaplly1": true
+                }
+                for (var j = 0; j < BlockShifts.length; j++) {
+                    if (BlockShifts[j] == IdShift) {
+                        AplShift.Isaplly1 = false;
+                    }
+                }
+
+                ApplyShift.push(AplShift);
+
+            }
+            ajaxCall("POST", "../api/ApplyShift", JSON.stringify(ApplyShift), PostAShiftS, PostAShiftE);
+        }
+        function PostAShiftS(data) {
+            alert("SABABA!");
+
+        }
+        function PostAShiftE(error) {
+            alert("BASSA");
+            console.log(error);
+        }
+        sortByDateAsc = function (lhs, rhs) { return lhs.StartShift > rhs.StartShift ? 1 : lhs.StartShift < rhs.StartShift ? -1 : 0 }
+
+    </script>
+    <title></title>
+</head>
+<body dir="rtl" style="background-color:aliceblue" onload="GetSHifts()">
+    <!--onload="GetUser()"-->
+    <img src="../Photos/LOGO.PNG" />
+    <div class="container-fluid" id="SubmShift">
+        <h1>הגשת העדפות</h1><br />
+        <div class="col-4">
+            <h5 style="color:cadetblue; background-color:#CCFFCC;"> משמרת ירוקה = משמרת הוגשה</h5>
+            <h5 style="color:#FCF1F1; background-color:#FF0000">משמרת אדומה = משמרת חסומה </h5>
+        </div>
+        <div class="row" id="submitshift" dir="rtl">
+            <div class="col" id="0">
+                <label> א'</label>
+            </div>
+            <div class="col" id="1">
+                <label> ב'</label>
+            </div>
+            <div class="col" id="2">
+                <label> ג'</label>
+            </div>
+            <div class="col" id="3">
+                <label> ד'</label>
+            </div>
+            <div class="col" id="4">
+                <label> ה'</label>
+            </div>
+            <div class="col" id="5">
+                <label> ו'</label>
+            </div>
+            <div class="col" id="6">
+                <label> ש'</label>
+            </div>
+        </div><br /><br />
+        <input type="button" value="הגש משמרות" onclick=" PostBlockShifts()" />
+
+    </div>
+</body>
+</html>

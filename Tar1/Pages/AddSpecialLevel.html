@@ -1,0 +1,125 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js" integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo=" crossorigin="anonymous"></script>
+    <script type="text/javascript"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.3.1.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+    <script>
+        var myData;
+        function PostSpicialLevel() {
+            str = $("#NameOfSpeicialLevel").val();
+            SpicialLevel = {
+                "Traininglevel": str,
+            }
+
+            ajaxCall("POST", "../api/TrainingLevel", JSON.stringify(SpicialLevel), PostSpicialLevelS, PostSpicialLevelE);
+
+        }
+        function PostSpicialLevelS(data) {
+            alert("good");
+            console.log(data);
+
+        }
+        function PostSpicialLevelE(error) {
+            alert("error");
+            console.log(error);
+        }
+        function getTrainingLevel() {
+            ajaxCall("GET", "../api/TrainingLevel", "", getTrainingLevelSuccess, getTrainingLevelError);
+        }
+        function getTrainingLevelSuccess(data) {
+            console.log(data);
+            swal("Successfuly!", "Great Job", "success");
+            myData = data;
+            str = "";
+            str += "<table align='center' >";
+            str += "<thead>";
+            str += "<tr>";
+            str += "<th>Traininglevel</th>";
+            str += "<th>Id</th>";
+            str += "<th></th>";
+            str += "</tr >";
+            for (var i = 0; i < myData.length; i++) {
+                str += "<tr>";
+                str += "<td>" + myData[i].Traininglevel + "</td>";
+                str += "<td>" + myData[i].Id + "</td>";
+                str += "<td><button onclick='editByID(this)'  id='" + myData[i].Id + "' value='" + myData[i].Traininglevel + "'>edit</button></td>";
+                str += "</tr >";
+            }
+
+            str += "</thead>";
+            str += "</table>";
+
+            document.getElementById("ph").innerHTML = str;
+
+
+        }
+
+        function getTrainingLevelError(error) {
+            console.log(error);
+            alert("basa");
+        }
+        function editByID(x) {
+            console.log(x.id);
+            str = "";
+            str += "<span>ערוך את שם רמת ההכשרה</span><input type='text' id='editText' value='" + x.value + "'/>";
+            str += "<button onclick='UpdateNewTL(this)' id='" + x.id + "'>שמור שינויים</button>";
+            document.getElementById("editDiv").innerHTML = str;
+
+        }
+        function UpdateNewTL(x) {
+            TrainingNewName = {
+                "Traininglevel": document.getElementById("editText").value,
+                "Id": 0
+            }
+
+            console.log(TrainingNewName);
+            ajaxCall("PUT", "../api/TrainingLevel/" + x.id, JSON.stringify(TrainingNewName), PutSuccess, PutError);
+        }
+        function PutSuccess(data) {
+            alert("great");
+        }
+        function PutError(error) {
+            alert("bad");
+            console.log(error);
+        }
+    </script>
+    <title></title>
+</head>
+<body dir="rtl" style="background-color:aliceblue" onload="getTrainingLevel()">
+    <img src="../Photos/LOGO.PNG" />
+    <div class="container" dir="rtl">
+        <h1> צפייה/עריכה רמות הכשרה</h1><br />
+        <div class="row">
+            <div class="col">
+                <div style="text-align:right">
+                    <span>הכנס רמת הכשרה חדשה: </span><input type="text" id="NameOfSpeicialLevel" />
+                    <input type="submit" value="שמור" onclick="PostSpicialLevel()" /><br />
+                </div>
+                <br />
+                <br />
+                <div style="text-align:center">
+                    <br />
+                    <div id="ph">
+                    </div>
+                    <br />
+                    <br />
+                    <div id="editDiv">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+</body>
+</html>

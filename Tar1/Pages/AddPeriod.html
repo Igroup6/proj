@@ -1,0 +1,203 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <link href="../Style.css" rel="stylesheet" />
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.4.1.min.js"
+            integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
+            crossorigin="anonymous"></script>
+    <script type="text/javascript"></script>
+    <script src="../Scripts/ajaxCalls.js"></script>
+    <script>
+        //user;
+        //function GetUser() {
+        //    x = localStorage.getItem("User");
+        //    user = JSON.parse(x);
+        //}
+        i = 0;
+        ShiftsArray = [];
+        function ShowShifts() {
+            startdate = $("#start").val();
+            enddate = $("#end").val();
+            str = "";
+            $("#Placeholder").html(str);
+            var start = new Date(startdate);
+            var end = new Date(enddate);
+            var loop = new Date(start);
+            i = 0;
+            if (document.getElementById("NightShift").checked == false) {
+                while (loop <= end) {
+                    m = loop.getMonth() + 1;
+                    D = loop.getDate() + "/" + m + "/" + loop.getFullYear();
+                    str += " <br /> <br /><div ><div class='row'><div class='col'>";
+                    str += "</div><div class='col'><h4>משמרת בוקר </h4><br /></div><div class='col'><h4>משמרת ערב </h4><br />";
+                    str += " </div></div><div class='row'><div class='col'><label style='font-size:25px; font-weight:bold' id='DayDate" + i + "'>" + D + "</label> </div>";
+                    str += "<div class='col'><span>שעות:</span> <input type='time' id='Mend" + i + "' value='15:00'/><strong> - </strong><input type='time' id='Mstr" + i + "' value='07:00'/> <br />";
+                    str += " <span> מספר מדריכים:</span> <input type='number' id='Mnum" + i + "' value='1'/> <br /> <br /></div > <div class='col'>";
+                    str += "<span>שעות:</span> <input type='time'id='Eend" + i + "' value='23:00'/> <strong> - </strong> <input type='time'  id='Estr" + i + "' value='15:00'/> <br /><span> מספר מדריכים:</span> <input type='number' id='Enum" + i + "' value='2'/> <br /> <br /> </div >  <br /> <br /></div ></div>";
+                    var newDate = loop.setDate(loop.getDate() + 1);
+                    loop = new Date(newDate);
+                    i++;
+                }
+                   $("#AskPreparedness").html(" ");
+            }
+            else if (document.getElementById("NightShift").checked == true) {
+                str = "";
+                while (loop <= end) {
+
+                    m = loop.getMonth() + 1;
+                    D = loop.getDate() + "/" + m + "/" + loop.getFullYear();
+                    str += "<br /> <br /><div><div class='row'><div class='col'></div><div class='col'><h4>משמרת בוקר </h4><br /></div><div class='col'>";
+                    str += "<h4>משמרת ערב </h4><br /></div><div class='col'><h4>משמרת לילה </h4><br /></div>";
+                    str += "</div > <div class='row'><div class='col'><label style='font-size:25px; font-weight:bold'  id='DayDate" + i + "'>" + D + "</label> </div>";
+                    str += " <div class='col'><span>שעות:</span> <input type='time' id='Mend" + i + "' value='15:00'/> <strong> - </strong> <input type='time' id='Mstr" + i + "' value='07:00'/> <br />";
+                    str += "<span> מספר מדריכים:</span> <input type='number'  id='Mnum" + i + "' value='1'/> <br /> <br /></div > <div class='col'>";
+                    str += "<span>שעות:</span><input type='time' id='Eend" + i + "' value='23:00'/> <strong> - </strong>  <input type='time' id='Estr" + i + "' value='15:00'/> <br /><span> מספר מדריכים:</span> <input type='number' id='Enum" + i + "' value='2'/> <br /> <br />";
+                    str += "</div> <div class='col'><span>שעות:</span>  <input type='time'  id='Nend" + i + "' value='07:00'/><strong> - </strong> <input type='time'  id='Nstr" + i + "' value='23:00'/> <br /><span> מספר מדריכים:</span> <input type='number' id='Nnum" + i + "' value='1'/> <br /> <br />";
+                    str += " </div > <br /> <br /></div ></div >";
+                    var newDate = loop.setDate(loop.getDate() + 1);
+                    loop = new Date(newDate);
+                    i++;
+                }
+                  
+                strAks = "<label> האם המדריכים נשארים ערים במשמרת הלילה?</label><br />";
+                strAks += "<input type='radio' name='wakeup' value='True' /><label>כן</label><br />";
+                strAks += "<input type='radio' name='wakeup' value='false' /><label>לא</label><br />";
+                $("#AskPreparedness").html(strAks);
+            }
+           
+          
+            $("#Placeholder").html(str);
+            $("#save").show();
+        }
+        function PostPeriod() {
+            ShiftsArray = [];
+            startdate = $("#start").val();
+            enddate = $("#end").val(); 
+            if (document.getElementById("NightShift").checked == true) {
+                arr = document.getElementsByName("wakeup");
+                if (arr[0].checked == true)
+                    Preparedness = true;
+                else if (arr[1].checked == true)
+                    Preparedness = false;
+            }
+            Period = {
+                "Startdate": startdate,
+                "Enddate": enddate,
+                "Unitid": 2,
+                "Preparedness1":Preparedness
+                /*user.Unitid*/
+            }
+            for (var k = 0; k < i; k++) {
+                Shiftdate = document.getElementById("DayDate" + k).innerText;
+                var X = Shiftdate.split("/");
+                shiftDateR = X[2] + "-" + X[1] + "-" + X[0];
+                startH = $("#Mstr" + k).val();
+                EndH = $("#Mend" + k).val();
+                GuideNum = $("#Mnum" + k).val();
+                shift = {
+                    "Type": "בוקר",
+                    "Start": startH,
+                    "End": EndH,
+                    "Uid": 2,
+                    "Startperiod": startdate,
+                    "Endperiod": enddate,
+                    "Shiftdate": shiftDateR,
+                    "GuideNum1": GuideNum
+                }
+                ShiftsArray.push(shift);
+
+                startH = $("#Estr" + k).val();
+                EndH = $("#Eend" + k).val();
+                GuideNum = $("#Enum" + k).val();
+                shift = {
+                    "Type": "ערב",
+                    "Start": startH,
+                    "End": EndH,
+                    "Uid": 2,
+                    "Startperiod": startdate,
+                    "Endperiod": enddate,
+                    "Shiftdate": shiftDateR,
+                    "GuideNum1": GuideNum
+                }
+                ShiftsArray.push(shift);
+                if (document.getElementById("NightShift").checked == true) {
+
+                    startH = $("#Nstr" + k).val();
+                    EndH = $("#Nend" + k).val();
+                    GuideNum = $("#Nnum" + k).val();
+                    shift = {
+                        "Type": "לילה",
+                        "Start": startH,
+                        "End": EndH,
+                        "Uid": 2,
+                        "Startperiod": startdate,
+                        "Endperiod": enddate,
+                        "Shiftdate": shiftDateR,
+                        "GuideNum1": GuideNum
+                    }
+                    ShiftsArray.push(shift);
+
+                }
+            }
+            ajaxCall("POST", "../api/Period", JSON.stringify(Period), PostPeriodS, PostPeriodE);
+        }
+        function PostPeriodS(data) {
+            alert("SABABA!");
+            ajaxCall("POST", "../api/Shifts", JSON.stringify(ShiftsArray), PostShiftS, PostShiftE);
+        }
+        function PostPeriodE(error) {
+            alert("BASSA");
+            console.log(error);
+        }
+        function PostShiftS(data) {
+            alert("SABABA!");
+        }
+        function PostShiftE(error) {
+            alert("BASSA");
+            console.log(error);
+        }
+   
+    </script>
+    <title></title>
+</head>
+<body dir="rtl" style="background-color:aliceblue">
+    <!--onload="GetUser()"-->
+    <img src="../Photos/LOGO.PNG" />
+    <div class="container">
+        <h1>  הוספת תקופת שיבוץ חדשה</h1><br />
+        <form dir="rtl">
+            <div class="row">
+                <label><strong> בחר תאריכים: </strong></label>
+
+                <div class="col">
+                    <label> תאריך התחלה:</label><input type="date" id="start" />
+                </div>
+                <div class="col">
+                    <label> תאריך סיום:</label><input type="date" id="end" />
+                </div>
+                <div>  <input type="checkbox" id="NightShift" /> <span> יש משמרת לילה?</span></div>
+            </div>
+        </form>
+        <br />
+
+        <input type="submit" style="font-size:30px; margin-left:400px;" value="הצג משמרות בתקופת שיבוץ" onclick="ShowShifts()" /><br />
+
+        <form>
+            <div id="Placeholder">
+            </div>
+            <div id='AskPreparedness'>
+
+            </div>
+        </form>
+
+        <div class="row" dir="ltr" style="font-size:30px;display:none" id="save">
+            <br /><input type="submit" value="שמור" onclick="PostPeriod()" /><br />
+        </div>
+    </div>
+</body>
+</html>
